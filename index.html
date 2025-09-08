@@ -8,33 +8,23 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Login Screen -->
-  <div id="login-screen">
-    <div class="login-box">
-      <h2>Enter Your Mobile Number</h2>
-      <input type="tel" id="mobile-input" placeholder="Enter mobile number" maxlength="10" />
-      <button id="start-btn">Start</button>
-    </div>
-  </div>
-
-  <!-- Main App -->
-  <div class="video-container" style="display: none;">
+  <div class="video-container">
     <video id="webcam" autoplay muted playsinline></video>
     <canvas id="overlay"></canvas>
   </div>
 
-  <div id="branding" style="display: none;">
+  <div id="branding">
     <img src="logo.png" alt="Overlay Jewels Logo" class="logo-icon" />
   </div>
 
-  <div class="ui-buttons" style="display: none;">
+  <div class="ui-buttons">
     <a id="location-btn" href="https://www.google.com/maps/place/50,+VP+St,+Vannarpet,+Coonoor,+Tamil+Nadu+643101" target="_blank" rel="noopener noreferrer">
       <img src="location_icon.png" alt="Location" />
     </a>
     <button id="info-btn" onclick="toggleInfoModal()">ℹ️</button>
   </div>
   
-  <div id="jewelry-mode" class="button-group" style="display: none;">
+  <div id="jewelry-mode" class="button-group">
     <button onclick="toggleCategory('earrings')">EARRINGS</button>
     <button onclick="toggleCategory('necklaces')">CHAINS</button>
     <button onclick="toggleCategory('bracelet')">Bracelets</button>
@@ -52,11 +42,11 @@
     <h3>How to Use the Try-On App</h3>
     <div class="info-content">
       <ul>
-        <li>Enter your mobile number to start.</li>
+        <li>Open the camera and scan the QR code.</li>
         <li>Allow camera access when prompted.</li>
         <li>Choose a jewelry item (earrings, necklace, etc.).</li>
         <li>See it live on your face in real-time!</li>
-        <li>Your selections will be logged automatically.</li>
+        <li>Try different styles and explore.</li>
       </ul>
       <button class="close-btn" onclick="toggleInfoModal()">Got it!</button>
     </div>
