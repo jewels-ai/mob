@@ -25,7 +25,7 @@ let smoothedFacePoints = {};
 const API_KEY = "AIzaSyA1JCqs3gl6TMVz1cwPIsTD2sefDPRr8OY"; 
 
 // Google Sheets API endpoint (Apps Script Web App)
-const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw46v8R2VM-OItlTn33Bw1PTQDVh10HwZw52dgdOhmHhfCcGBjvY0dhSex3gbPJCDZZ/exec";
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzfyArzUNMV7UT2kqnYb3VgCQc--Em2mG8Xtrzpofc0NrSM1tnJXu4FAn9HxkcZXVs/exec";
 
 // Map jewelry type → Google Drive Folder ID
 const driveFolders = {
@@ -57,7 +57,7 @@ async function fetchDriveImages(folderId) {
 async function logActivity(itemName) {
   if (!userMobile) return;
   try {
-    await fetch(SHEET_API_URL, {
+    const res = await fetch(SHEET_API_URL, {
       method: "POST",
       body: JSON.stringify({
         mobile: userMobile,
@@ -65,6 +65,7 @@ async function logActivity(itemName) {
       }),
       headers: { "Content-Type": "application/json" }
     });
+    console.log("Log response:", await res.text());
   } catch (err) {
     console.error("Error logging activity:", err);
   }

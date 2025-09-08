@@ -24,6 +24,7 @@ video, canvas {
   z-index: 1;
 }
 
+/* Branding */
 #branding {
   position: fixed;
   top: 21px;
@@ -44,14 +45,13 @@ video, canvas {
   margin-right: 10px;
 }
 
-/* Main Jewelry Category Buttons */
+/* Category buttons */
 #jewelry-mode {
   position: fixed;
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  flex-direction: row;
   gap: 12px;
   z-index: 5;
   background: rgba(0, 0, 0, 0.6);
@@ -62,29 +62,29 @@ video, canvas {
 
 #jewelry-mode button {
   background-color: #5E0F8B;
-  color: #ffffff;
+  color: #fff;
   border: none;
   padding: 10px 12px;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background 0.3s ease;
 }
 
 #jewelry-mode button:hover {
   background-color: #3b0764;
 }
 
-/* Subcategory Buttons (Gold/Diamond) */
+/* Subcategory buttons */
 #subcategory-buttons {
   position: fixed;
   bottom: 130px;
   left: 0;
   width: 100%;
   justify-content: center;
-  z-index: 5;
   display: flex;
   gap: 12px;
+  z-index: 5;
   background: rgba(0, 0, 0, 0.6);
   padding: 8px 12px;
   border-radius: 10px;
@@ -92,16 +92,16 @@ video, canvas {
 }
 
 #subcategory-buttons button {
-  background-color: #FFB800;
+  background: #FFB800;
   color: #000;
   border: none;
   padding: 8px 10px;
   border-radius: 6px;
-  cursor: pointer;
   font-weight: bold;
+  cursor: pointer;
 }
 
-/* Jewelry Options Scroll List */
+/* Jewelry options */
 .options-group {
   position: fixed;
   bottom: 70px;
@@ -133,7 +133,6 @@ video, canvas {
   width: 60px;
   height: 60px;
   border-radius: 12px;
-  transition: transform 0.2s ease;
 }
 
 .options-group button:hover img {
@@ -141,7 +140,7 @@ video, canvas {
   transform: scale(1.05);
 }
 
-/* UI Buttons (Location, Info) */
+/* UI buttons */
 .ui-buttons {
   position: fixed;
   top: 20px;
@@ -162,19 +161,13 @@ video, canvas {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
 .ui-buttons button:hover, .ui-buttons a:hover {
   background: rgba(255, 255, 255, 0.4);
 }
 
-.ui-buttons button img, .ui-buttons a img {
-  width: 25px;
-  height: 25px;
-}
-
-/* Info Modal */
+/* Info modal */
 #info-modal {
   display: none;
   position: fixed;
@@ -182,7 +175,7 @@ video, canvas {
   left: 50%;
   transform: translate(-50%, -50%);
   background: rgba(0, 0, 0, 0.9);
-  color: white;
+  color: #fff;
   padding: 30px;
   border-radius: 12px;
   z-index: 9999;
@@ -190,37 +183,18 @@ video, canvas {
   width: 400px;
 }
 
-.info-content ul {
-  padding-left: 20px;
-  line-height: 1.6;
-}
-
-.close-btn {
-  background-color: #5E0F8B;
-  color: #ffffff;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 20px;
-}
-
-/* Phone Gate (Mobile Number Input) */
+/* Phone gate */
 .phone-gate {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  display: flex; flex-direction: column;
-  justify-content: center; align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background: #0b0b0b;
   color: #fff;
   z-index: 9999;
-}
-
-.phone-gate h2 {
-  font-family: 'Cinzel', serif;
-  font-size: 22px;
-  margin-bottom: 15px;
 }
 
 .phone-gate input {
@@ -231,7 +205,6 @@ video, canvas {
   margin: 10px 0;
   width: 220px;
   text-align: center;
-  outline: none;
 }
 
 .phone-gate button {
@@ -242,7 +215,6 @@ video, canvas {
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.3s ease;
 }
 
 .phone-gate button:hover {
