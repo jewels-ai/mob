@@ -8,14 +8,14 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Phone Number Gate -->
+  <!-- Phone Gate -->
   <div id="phone-gate" class="phone-gate">
     <h2>Enter Your Mobile Number</h2>
     <input type="tel" id="mobile-input" placeholder="Enter Mobile Number" />
     <button onclick="startApp()">Start Try-On</button>
   </div>
 
-  <!-- Main App Content (hidden until unlocked) -->
+  <!-- Main App -->
   <div id="app-content" style="display:none;">
     <div class="video-container">
       <video id="webcam" autoplay muted playsinline></video>
@@ -23,17 +23,18 @@
     </div>
 
     <div id="branding">
-      <img src="logo.png" alt="Overlay Jewels Logo" class="logo-icon" />
+      <img src="logo.png" alt="Overlay Jewels Logo" />
     </div>
 
     <div class="ui-buttons">
-      <a id="location-btn" href="https://www.google.com/maps/place/50,+VP+St,+Vannarpet,+Coonoor,+Tamil+Nadu+643101" target="_blank" rel="noopener noreferrer">
+      <button id="snapshot-btn"><img src="camera_icon.png" alt="📷" class="camera-icon" /></button>
+      <a id="location-btn" href="https://www.google.com/maps/place/50,+VP+St,+Vannarpet,+Coonoor,+Tamil+Nadu+643101" target="_blank">
         <img src="location_icon.png" alt="Location" />
       </a>
-      <button id="info-btn" onclick="toggleInfoModal()">ℹ️</button>
+      <button onclick="toggleInfoModal()">ℹ️</button>
     </div>
 
-    <!-- Category Buttons -->
+    <!-- Categories -->
     <div id="jewelry-mode" class="button-group">
       <button onclick="toggleCategory('earrings')">EARRINGS</button>
       <button onclick="toggleCategory('necklaces')">CHAINS</button>
@@ -41,14 +42,14 @@
       <button onclick="toggleCategory('ring')">Rings</button>
     </div>
 
-    <!-- Subcategory Buttons -->
-    <div id="subcategory-buttons" class="button-group" style="display: none;">
+    <!-- Subcategories -->
+    <div id="subcategory-buttons" class="button-group" style="display:none;">
       <button onclick="selectJewelryType(currentType, 'gold')">Gold</button>
       <button onclick="selectJewelryType(currentType, 'diamond')">Diamond</button>
     </div>
 
     <!-- Jewelry Options -->
-    <div id="jewelry-options" class="options-group" style="display: none;"></div>
+    <div id="jewelry-options" class="options-group" style="display:none;"></div>
 
     <!-- Info Modal -->
     <dialog id="info-modal">
@@ -56,13 +57,21 @@
       <div class="info-content">
         <ul>
           <li>Allow camera access when prompted.</li>
-          <li>Select a jewelry category (earrings, necklace, etc.).</li>
-          <li>Pick gold or diamond style.</li>
-          <li>See it live on your face/hands in real-time!</li>
+          <li>Pick a jewelry type and style.</li>
+          <li>See it live on your face or hands.</li>
         </ul>
         <button class="close-btn" onclick="toggleInfoModal()">Got it!</button>
       </div>
     </dialog>
+
+    <!-- Snapshot Modal -->
+    <div id="snapshot-modal">
+      <img id="snapshot-preview" />
+      <div class="snapshot-buttons">
+        <button onclick="downloadSnapshot()">Download</button>
+        <button onclick="closeSnapshot()">Close</button>
+      </div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.min.js"></script>
