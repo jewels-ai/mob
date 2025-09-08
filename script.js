@@ -20,6 +20,40 @@ let camera;
 let smoothedHandPoints = {};
 let smoothedFacePoints = {};
 
+// ================== LOGIN SCREEN ==================
+const loginScreen = document.getElementById("login-screen");
+const startBtn = document.getElementById("start-btn");
+const mobileInput = document.getElementById("mobile-input");
+const mainElements = document.querySelectorAll(
+  ".video-container, #branding, .ui-buttons, #jewelry-mode"
+);
+
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxKzqFdukEC-n1FK5upjiXNrhxo5JBstN8ZFnXj-b1DwJljmMRmlCHSnCpq1JRlH4-UXg/exec";
+
+function showApp() {
+  loginScreen.style.display = "none";
+  mainElements.forEach(el => el.style.display = "block");
+  startCamera("user");
+}
+
+// Auto-login if stored
+if (localStorage.getItem("mobileNumber")) {
+  showApp();
+}
+
+// Start button handler
+if (startBtn) {
+  startBtn.addEventListener("click", () => {
+    const mobile = mobileInput.value.trim();
+    if (!/^[0-9]{10}$/.test(mobile)) {
+      alert("Please enter a valid 10-digit mobile number");
+      return;
+    }
+    localStorage.setItem("mobileNumber", mobile);
+    showApp();
+  });
+}
+
 // ================== GOOGLE DRIVE CONFIG ==================
 const API_KEY = "AIzaSyA1JCqs3gl6TMVz1cwPIsTD2sefDPRr8OY"; 
 
@@ -38,34 +72,26 @@ async function fetchDriveImages(folderId) {
   const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents&key=${API_KEY}&fields=files(id,name,mimeType)`;
   const res = await fetch(url);
   const data = await res.json();
-
   if (!data.files) return [];
-
   return data.files
     .filter(f => f.mimeType.includes("image/"))
     .map(f => {
       const link = `https://drive.google.com/thumbnail?id=${f.id}&sz=w1000`;
-      console.log("Image loaded:", link);
       return { id: f.id, name: f.name, src: link };
     });
 }
-
-// =========================================================
 
 // Utility function to load images
 async function loadImage(src) {
   return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => resolve(img);
-    img.onerror = () => {
-      console.error(`Failed to load image: ${src}`);
-      resolve(null);
-    };
+    img.onerror = () => resolve(null);
     img.src = src;
   });
 }
 
-// Change jewelry image
+// Change jewelry image + log activity
 async function changeJewelry(type, src) {
   const img = await loadImage(src);
   if (!img) return;
@@ -76,6 +102,26 @@ async function changeJewelry(type, src) {
   else if (type.includes('necklaces')) necklaceImg = img;
   else if (type.includes('bracelet')) braceletImg = img;
   else if (type.includes('ring')) ringImg = img;
+
+  logActivity(type);
+}
+
+// Log activity to Google Apps Script
+function logActivity(item) {
+  const mobile = localStorage.getItem("mobileNumber") || "Unknown";
+  const now = new Date();
+  const payload = {
+    mobile: mobile,
+    date: now.toISOString().split("T")[0],
+    time: now.toTimeString().split(" ")[0],
+    item: item
+  };
+
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: { "Content-Type": "application/json" }
+  }).catch(err => console.error("Log failed:", err));
 }
 
 // Handle category selection
@@ -88,10 +134,8 @@ function toggleCategory(category) {
   if (isAccessoryCategory) {
     insertJewelryOptions(category, 'jewelry-options');
     jewelryOptions.style.display = 'flex';
-    startCamera('environment');
   } else {
     subcategoryButtons.style.display = 'flex';
-    startCamera('user');
   }
 }
 
@@ -107,11 +151,7 @@ function selectJewelryType(mainType, subType) {
 async function insertJewelryOptions(type, containerId) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
-
-  if (!driveFolders[type]) {
-    console.error("No Google Drive folder mapped for:", type);
-    return;
-  }
+  if (!driveFolders[type]) return;
 
   const images = await fetchDriveImages(driveFolders[type]);
 
@@ -175,8 +215,6 @@ async function startCamera(facingMode) {
   });
   camera.start();
 }
-
-document.addEventListener('DOMContentLoaded', () => startCamera('user'));
 
 videoElement.addEventListener('loadedmetadata', () => {
   canvasElement.width = videoElement.videoWidth;
