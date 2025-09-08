@@ -8,14 +8,14 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Mobile Number Input Form -->
+  <!-- Phone Number Gate -->
   <div id="phone-gate" class="phone-gate">
     <h2>Enter Your Mobile Number</h2>
     <input type="tel" id="mobile-input" placeholder="Enter Mobile Number" />
     <button onclick="startApp()">Start Try-On</button>
   </div>
 
-  <!-- App Content (hidden until phone entered) -->
+  <!-- Main App Content (hidden until unlocked) -->
   <div id="app-content" style="display:none;">
     <div class="video-container">
       <video id="webcam" autoplay muted playsinline></video>
@@ -32,7 +32,8 @@
       </a>
       <button id="info-btn" onclick="toggleInfoModal()">ℹ️</button>
     </div>
-    
+
+    <!-- Category Buttons -->
     <div id="jewelry-mode" class="button-group">
       <button onclick="toggleCategory('earrings')">EARRINGS</button>
       <button onclick="toggleCategory('necklaces')">CHAINS</button>
@@ -40,22 +41,24 @@
       <button onclick="toggleCategory('ring')">Rings</button>
     </div>
 
+    <!-- Subcategory Buttons -->
     <div id="subcategory-buttons" class="button-group" style="display: none;">
       <button onclick="selectJewelryType(currentType, 'gold')">Gold</button>
       <button onclick="selectJewelryType(currentType, 'diamond')">Diamond</button>
     </div>
-    
+
+    <!-- Jewelry Options -->
     <div id="jewelry-options" class="options-group" style="display: none;"></div>
-    
+
+    <!-- Info Modal -->
     <dialog id="info-modal">
       <h3>How to Use the Try-On App</h3>
       <div class="info-content">
         <ul>
-          <li>Open the camera and scan the QR code.</li>
           <li>Allow camera access when prompted.</li>
-          <li>Choose a jewelry item (earrings, necklace, etc.).</li>
-          <li>See it live on your face in real-time!</li>
-          <li>Try different styles and explore.</li>
+          <li>Select a jewelry category (earrings, necklace, etc.).</li>
+          <li>Pick gold or diamond style.</li>
+          <li>See it live on your face/hands in real-time!</li>
         </ul>
         <button class="close-btn" onclick="toggleInfoModal()">Got it!</button>
       </div>
