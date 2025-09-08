@@ -28,7 +28,6 @@ const mainElements = document.querySelectorAll(
   ".video-container, #branding, .ui-buttons, #jewelry-mode"
 );
 
-// 🔗 Google Apps Script Web App URL
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxKzqFdukEC-n1FK5upjiXNrhxo5JBstN8ZFnXj-b1DwJljmMRmlCHSnCpq1JRlH4-UXg/exec";
 
 function showApp() {
@@ -104,40 +103,28 @@ async function changeJewelry(type, src) {
   else if (type.includes('bracelet')) braceletImg = img;
   else if (type.includes('ring')) ringImg = img;
 
-  logActivity(type); // log selection
+  logActivity(type);
 }
 
-// ================== LOGGING TO SHEET ==================
-async function logActivity(item) {
+// Log activity to Google Apps Script
+function logActivity(item) {
   const mobile = localStorage.getItem("mobileNumber") || "Unknown";
   const now = new Date();
   const payload = {
     mobile: mobile,
-    date: now.toISOString().split("T")[0],    // YYYY-MM-DD
-    time: now.toTimeString().split(" ")[0],   // HH:MM:SS
+    date: now.toISOString().split("T")[0],
+    time: now.toTimeString().split(" ")[0],
     item: item
   };
 
-  try {
-    const res = await fetch(WEB_APP_URL, {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: { "Content-Type": "application/json" }
-    });
-
-    if (!res.ok) {
-      console.error("Log failed:", await res.text());
-      alert("⚠️ Unable to save activity. Check Google Apps Script deployment.");
-    } else {
-      console.log("✅ Activity logged:", payload);
-    }
-  } catch (err) {
-    console.error("Error logging:", err);
-    alert("⚠️ Error sending data. See console for details.");
-  }
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: { "Content-Type": "application/json" }
+  }).catch(err => console.error("Log failed:", err));
 }
 
-// ================== UI HANDLERS ==================
+// Handle category selection
 function toggleCategory(category) {
   jewelryOptions.style.display = 'none';
   subcategoryButtons.style.display = 'none';
@@ -152,6 +139,7 @@ function toggleCategory(category) {
   }
 }
 
+// Handle subcategory (Gold/Diamond)
 function selectJewelryType(mainType, subType) {
   currentType = `${subType}_${mainType}`;
   subcategoryButtons.style.display = 'none';
@@ -159,6 +147,7 @@ function selectJewelryType(mainType, subType) {
   insertJewelryOptions(currentType, 'jewelry-options');
 }
 
+// Insert jewelry options (from Google Drive)
 async function insertJewelryOptions(type, containerId) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
