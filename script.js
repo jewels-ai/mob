@@ -28,7 +28,8 @@ const mainElements = document.querySelectorAll(
   ".video-container, #branding, .ui-buttons, #jewelry-mode"
 );
 
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxKzqFdukEC-n1FK5upjiXNrhxo5JBstN8ZFnXj-b1DwJljmMRmlCHSnCpq1JRlH4-UXg/exec";
+// ✅ Updated with your new Web App URL
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyiofoYyptXpTHBvrJ6ysNMGYfejFWHgFgnxvRObhnzIrwPv0SHNVIdWzDdnWHbLp_b-A/exec";
 
 function showApp() {
   loginScreen.style.display = "none";
@@ -106,7 +107,7 @@ async function changeJewelry(type, src) {
   logActivity(type);
 }
 
-// Log activity to Google Apps Script
+// ✅ Log activity to Google Apps Script
 function logActivity(item) {
   const mobile = localStorage.getItem("mobileNumber") || "Unknown";
   const now = new Date();
@@ -121,7 +122,39 @@ function logActivity(item) {
     method: "POST",
     body: JSON.stringify(payload),
     headers: { "Content-Type": "application/json" }
-  }).catch(err => console.error("Log failed:", err));
+  })
+    .then(res => res.json())
+    .then(res => {
+      if (res.status === "success") {
+        showToast("✅ Activity saved!");
+      } else {
+        showToast("⚠️ Failed to save activity");
+      }
+    })
+    .catch(err => {
+      console.error("Log failed:", err);
+      showToast("⚠️ Error while saving");
+    });
+}
+
+// ================== TOAST MESSAGE ==================
+function showToast(message) {
+  let toast = document.createElement("div");
+  toast.innerText = message;
+  toast.style.position = "fixed";
+  toast.style.bottom = "20px";
+  toast.style.left = "50%";
+  toast.style.transform = "translateX(-50%)";
+  toast.style.background = "rgba(0,0,0,0.8)";
+  toast.style.color = "#fff";
+  toast.style.padding = "10px 20px";
+  toast.style.borderRadius = "8px";
+  toast.style.zIndex = "999999";
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
 }
 
 // Handle category selection
