@@ -15,6 +15,7 @@ let currentType = '';
 let smoothedFaceLandmarks = null;
 let smoothedHandLandmarks = null;
 let camera;
+let userMobile = null;
 
 // Store smoothed jewelry positions
 let smoothedHandPoints = {};
@@ -22,6 +23,9 @@ let smoothedFacePoints = {};
 
 // ================== GOOGLE DRIVE CONFIG ==================
 const API_KEY = "AIzaSyA1JCqs3gl6TMVz1cwPIsTD2sefDPRr8OY"; 
+
+// Google Sheets API endpoint (Apps Script Web App)
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbw46v8R2VM-OItlTn33Bw1PTQDVh10HwZw52dgdOhmHhfCcGBjvY0dhSex3gbPJCDZZ/exec";
 
 // Map jewelry type → Google Drive Folder ID
 const driveFolders = {
@@ -45,12 +49,41 @@ async function fetchDriveImages(folderId) {
     .filter(f => f.mimeType.includes("image/"))
     .map(f => {
       const link = `https://drive.google.com/thumbnail?id=${f.id}&sz=w1000`;
-      console.log("Image loaded:", link);
       return { id: f.id, name: f.name, src: link };
     });
 }
 
-// =========================================================
+// ================== Google Sheets Logging ==================
+async function logActivity(itemName) {
+  if (!userMobile) return;
+  try {
+    await fetch(SHEET_API_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        mobile: userMobile,
+        item: itemName
+      }),
+      headers: { "Content-Type": "application/json" }
+    });
+  } catch (err) {
+    console.error("Error logging activity:", err);
+  }
+}
+
+function startApp() {
+  const input = document.getElementById('mobile-input').value.trim();
+  if (!input) {
+    alert("Please enter your mobile number.");
+    return;
+  }
+  userMobile = input;
+
+  document.getElementById('phone-gate').style.display = 'none';
+  document.getElementById('app-content').style.display = 'block';
+
+  logActivity("App Opened");
+  startCamera('user');
+}
 
 // Utility function to load images
 async function loadImage(src) {
@@ -121,7 +154,10 @@ async function insertJewelryOptions(type, containerId) {
     img.src = file.src;
     img.alt = `${type.replace('_', ' ')} ${i + 1}`;
     btn.appendChild(img);
-    btn.onclick = () => changeJewelry(type, file.src);
+    btn.onclick = () => {
+      changeJewelry(type, file.src);
+      logActivity(`${type} - ${file.name}`);
+    };
     container.appendChild(btn);
   });
 }
@@ -175,8 +211,6 @@ async function startCamera(facingMode) {
   });
   camera.start();
 }
-
-document.addEventListener('DOMContentLoaded', () => startCamera('user'));
 
 videoElement.addEventListener('loadedmetadata', () => {
   canvasElement.width = videoElement.videoWidth;

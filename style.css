@@ -44,14 +44,7 @@ video, canvas {
   margin-right: 10px;
 }
 
-.camera-icon {
-  width: 28px;
-  height: 28px;
-  vertical-align: middle;
-  margin-right: 8px;
-}
-
-/* Main Jewelry Category Buttons (EARRINGS, CHAINS, etc.) */
+/* Main Jewelry Category Buttons */
 #jewelry-mode {
   position: fixed;
   bottom: 10px;
@@ -89,7 +82,6 @@ video, canvas {
   left: 0;
   width: 100%;
   justify-content: center;
-  transform: none;
   z-index: 5;
   display: flex;
   gap: 12px;
@@ -115,7 +107,6 @@ video, canvas {
   bottom: 70px;
   left: 0;
   width: 100%;
-  transform: none;
   display: flex;
   gap: 15px;
   z-index: 2;
@@ -150,7 +141,7 @@ video, canvas {
   transform: scale(1.05);
 }
 
-/* UI Buttons (Snapshot, Location, Info) */
+/* UI Buttons (Location, Info) */
 .ui-buttons {
   position: fixed;
   top: 20px;
@@ -214,33 +205,46 @@ video, canvas {
   margin-top: 20px;
 }
 
-/* Snapshot Modal */
-#snapshot-modal {
-  display: none;
+/* Phone Gate (Mobile Number Input) */
+.phone-gate {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  text-align: center;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  background: #0b0b0b;
+  color: #fff;
   z-index: 9999;
 }
 
-#snapshot-preview {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 10px;
-  margin-bottom: 10px;
+.phone-gate h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  margin-bottom: 15px;
 }
 
-.snapshot-buttons button {
-  margin: 5px;
-  padding: 10px 16px;
+.phone-gate input {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  margin: 10px 0;
+  width: 220px;
+  text-align: center;
+  outline: none;
+}
+
+.phone-gate button {
+  background: #5E0F8B;
+  color: #fff;
+  padding: 12px 20px;
   border: none;
   border-radius: 8px;
-  background: #5E0F8B;
-  color: #ffffff;
   cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.phone-gate button:hover {
+  background: #3b0764;
 }
