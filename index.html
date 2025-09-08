@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jewelry Try-On Logger</title>
+</head>
+<body>
+
+  <!-- Mobile Number Entry -->
+  <div id="loginScreen">
+    <h3>Enter Your Mobile Number</h3>
+    <input type="text" id="mobileInput" placeholder="Mobile Number">
+    <button onclick="saveMobileNumber()">Submit</button>
+  </div>
+
+  <!-- Main App Content -->
+  <div id="appContent" style="display:none;">
+    <h3>Jewelry Try-On</h3>
+    <button onclick="logJewelryTry('Diamond Ring')">Try Diamond Ring</button>
+    <button onclick="logJewelryTry('Gold Necklace')">Try Gold Necklace</button>
+    <button onclick="logJewelryTry('Silver Bracelet')">Try Silver Bracelet</button>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKzqFdukEC-n1FK5upjiXNrhxo5JBstN8ZFnXj-b1DwJljmMRmlCHSnCpq1JRlH4-UXg/exec";
+
+    // Save mobile on entry
+    function saveMobileNumber() {
+      const mobile = document.getElementById("mobileInput").value.trim();
+      if (!mobile) {
+        alert("Please enter your mobile number");
+        return;
+      }
+      localStorage.setItem("userMobile", mobile);
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("appContent").style.display = "block";
+    }
+
+    // Log jewelry try
+    function logJewelryTry(itemName) {
+      const mobile = localStorage.getItem("userMobile") || "Unknown";
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ mobile: mobile, item: itemName })
+      })
+      .then(res => res.text())
+      .then(txt => {
+        console.log("Logged:", itemName, txt);
+        alert("Logged: " + itemName);
+      })
+      .catch(err => console.error("Error logging:", err));
+    }
+  </script>
+</body>
+</html>
